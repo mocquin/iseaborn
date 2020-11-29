@@ -212,9 +212,12 @@ def pairplot(df, cols=[]):
             ):
         #fig, ax = plt.subplots()
 
-
+        cols = list(cols)
+        if len(cols) == 0:
+            cols = list(df.columns)
+        
         sns.pairplot(
-            data=df, 
+            data=df[cols], 
              kind=kind,                              #plot-kind in cross cells : {‘scatter’, ‘kde’, ‘hist’, ‘reg’}
              #vars=,
              #x_vars=iris_num_cols, # restrict variables on xaxis
