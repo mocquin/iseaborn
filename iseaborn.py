@@ -159,7 +159,7 @@ def heatmap(df, cols=[]):
 def pairplot(df, cols=[]):
     if len(cols) == 0:
             cols = list(df.columns)
-            
+
     cols_ext = list(cols)
     cols_ext.insert(0, None)
             
@@ -217,7 +217,7 @@ def pairplot(df, cols=[]):
             cols = list(df.columns)
         
         sns.pairplot(
-            data=df[cols], 
+             data=df[cols], 
              kind=kind,                              #plot-kind in cross cells : {‘scatter’, ‘kde’, ‘hist’, ‘reg’}
              #vars=,
              #x_vars=iris_num_cols, # restrict variables on xaxis

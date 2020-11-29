@@ -19,6 +19,9 @@ from iseaborn import heatmap
 heatmap(iris)
 ```
 
+Or more visually : 
+
+![examples.gif](examples.gif)
 
 # See also
 
