@@ -31,7 +31,7 @@ def countplot(df, cols=[]):
     
     hue_ui = ipyw.Dropdown(
         options=cols_ext,
-        value=cols[0],
+        value=None,
         description="hue",
         
     )
