@@ -7,6 +7,15 @@ import seaborn as sns
 
 
 
+
+
+
+
+
+
+
+
+
 palettes = ["pastel", "magma", "ch:.25", "ch:0.95", "Set2", "Set3"]
 
 
@@ -674,3 +683,14 @@ def histplot(df, cols=[]):
     )
     
     return full_ui
+
+
+
+
+
+
+
+
+
+
+
