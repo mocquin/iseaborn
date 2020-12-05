@@ -141,22 +141,12 @@ class WidgetDispenser(object):
 
     def __call__(self, arg_name):
         widget, kwargs = self.widget_map[arg_name]
+        kwargs["description"]=arg_name
         return widget(**kwargs)
 
 
-class Plots():
-    
-    def __init__(self):
-        self.compute_relplot_widgets()
-        self.compute_scatterplot_widgets()
-        self.compute_lineplot_widgets()
-        self.compute_catplot_widgets()
-        self.compute_stripplot_widgets()
-        self.compute_swarmplot_widgets()
-        self.compute_boxplot_widgets()
-    
-    def compute_relplot_widgets(self):
-        self.relplot = {
+PLOTS ={
+    "relplot":{
             "x"       : "x",
             "y"       : "y",
             "hue"     : "hue",
@@ -177,11 +167,8 @@ class Plots():
             "kind"    : "kind_relplot",
             "height"  : "height",
             "aspect"  : "aspect",
-        }
-        
-    def compute_scatterplot_widgets(self):
-        
-        self.scatterplot = {
+        },
+        "scatterplot":{
             "x": "x",
             "y": "y",
             "hue": "hue",
@@ -203,10 +190,8 @@ class Plots():
             "alpha": "alpha",
             #"{x,y}_jitter": (non functional)
             "legend": "legend",
-        }
-    
-    def compute_lineplot_widgets(self):
-        self.lineplot = {
+        },
+    "lineplot":{
             "x": "x",
             "y": "y",
             "hue": "hue",
@@ -226,10 +211,7 @@ class Plots():
             "sort": "sort",
             "err_style": "err_style",
             "legend": "legend",
-        }
-        
-    def compute_catplot_widgets(self):
-        self.catplot_widgets = {
+        },"catplot_widgets":{
             "x": "x",
             "y": "y",
             "row": "row",
@@ -252,10 +234,7 @@ class Plots():
             "sharex": "sharex",
             "sharey": "sharey",
             "margin_titles": "margin_titles",
-        }
-        
-    def compute_stripplot_widgets(self):
-        self.stripplot = {
+        },"stripplot":{
             "x": "x",
             "y": "y",
             #"order","hue_order"
@@ -267,10 +246,7 @@ class Plots():
             "size": "size_float",
             "edgecolor": "edgecolor",
             "linewidth": "linewidth",
-        }
-        
-    def compute_swarmplot_widgets(self):
-        self.swarmplot = {
+        },"swarmplot":{
             "x": "x",
             "y": "y",
             #"order","hue_order"
@@ -281,11 +257,7 @@ class Plots():
             "size": "size_float",
             "edgecolor": "edgecolor",
             "linewidth": "linewidth",
-        }
-        
-    def compute_boxplot_widgets(self):
-        
-        self.boxplot = {
+        },"boxplot":{
             "x": "x",
             "y": "y",
             #"order","hue_order"
@@ -299,10 +271,7 @@ class Plots():
             "linewidth": "linewidth",
             "whis":  "whis",
             "notch": "notch",
-        }
-    
-    def compute_violinplot_widgets(self):
-        self.violinplot = {
+        },"violinplot":{
             "x": "x",
             "y": "y",
             "hue": "hue",
@@ -321,10 +290,7 @@ class Plots():
             "color": "color",
             "palette": "palette",
             "saturation": "saturation",
-        }
-        
-    def compute_boxenplot_widgets(self):
-        self.boxenplot = {
+        },"boxenplot":{
             "x": "x",
             "y": "y",
             "hue": "hue",
@@ -339,10 +305,7 @@ class Plots():
             "linewidth": "linewidth",
             "scale":  "scale_boxenplot",
             "outlier_prop": "outlier_prop",
-        }
-        
-    def compute_pointplot_widgets(self):
-        self.pointplot = {
+        },"pointplot":{
         "x": "x",
         "y": "y",
         "hue": "hue",
@@ -361,11 +324,7 @@ class Plots():
         "palette": "palette",
         "errwidth": "errwidth",
         "capsize": "capsize",
-    }
-    
-    def compute_barplot_widgets(self):
-        
-        self.barplot = {
+    },"barplot":{
         "x": "x",
         "y": "y",
         "hue": "hue",
@@ -382,11 +341,7 @@ class Plots():
         "errwidth": "errwidth",
         "capsize": "capsize",
         #"dodge"
-    }
-        
-    def compute_countplot_widgets(self):
-        
-        self.countplot = {
+    },"countplot":{
         "x": "x",
         "y": "y",
         "hue": "hue",
@@ -396,10 +351,7 @@ class Plots():
         "palette": "palette",
         "saturation": "saturation",
         #"dodge"
-    }
-        
-    def compute_jointplot_widgets(self):
-        self.jointplot = {
+    },"jointplot":{
         "x": "x",
         "y": "y",
         "kind": "kind_jointplot",
@@ -411,10 +363,7 @@ class Plots():
         "dropna": "dropna",
         #"xlim"
         #"ylim"
-    }
-    
-    def compute_pairplot_widgets(self):
-        self.pairplot = {
+    },"pairplot":{
         "hue": "hue",
         #hue_order
         "palette": "palette",
@@ -427,10 +376,7 @@ class Plots():
         "height": "height",
         "aspect": "aspect",
         "dropna": "dropna",
-    }
-        
-    def compute_distplot_widgets(self):
-        self.distplot = {
+    },"distplot":{
         "a": "a",
         "bins": "bins",
         "hist": "hist",
@@ -443,10 +389,7 @@ class Plots():
         "norm_hist": "norm_hist",
         "axlabel": "axlabel",
         "label": "label",
-    }
-    
-    def compute_kdeplot_widgets(self):
-        self.kdeplot = {
+    },"kdeplot":{
         "data": "data",
         "data2": "data2",
         "shade": "shade",
@@ -461,10 +404,7 @@ class Plots():
         "shade_lowest": "shade_lowest",
         "cbar": "cbar",
         "cbar_ax": "cbar_ax",
-    }
-        
-    def compute_lmplot_widgets(self):
-        self.lmplot = {
+    },"lmplot":{
         "x": "x",
         "y": "y",
         "hue": "hue",
@@ -497,10 +437,7 @@ class Plots():
         "truncate": "truncate",
         "x_jitter": "x_jitter",
         "y_jitter": "y_jitter",
-    }
-        
-    def compute_regplot_widgets(self):
-        self.regplot = {
+    },"regplot":{
         "x": "x",
         "y": "y",
         #x_estimator
@@ -524,10 +461,7 @@ class Plots():
         "label": "label",
         "color": "color",
         "marker": "marker",
-    }
-        
-    def compute_residplot_widgets(self):
-        self.residplot = {
+    },"residplot":{
         "x": "x",
         "y": "y",
         "lowess": "lowess",
@@ -538,10 +472,7 @@ class Plots():
         "dropna": "dropna",
         "label": "label",
         "color": "color",
-    }
-        
-    def compute_heatmap_widgets(self):
-        self.heatmap = {
+    },"heatmap":{
         "vmin": "vmin",
         "vmax": "vmax",
         "cmap": "cmap",
@@ -556,34 +487,8 @@ class Plots():
         #xticklabels, yticklabels
         #"mask"
     }
-        
-        
-    def compute_main_dict(self):
-        self.dic = {
-        "relplot"    : self.relplot,
-        "scatterplot": self.scatterplot,
-        "lineplot"   : self.lineplot,
-        "catplot"    : self.catplot,
-        "stripplot"  : self.stripplot,
-        "swarmplot"  : self.swarmplot,
-        "boxplot"    : self.boxplot,
-        "violinplot" : self.violinplot,
-        "boxenplot"  : self.boxenplot,
-        "pointplot"  : self.pointplot,
-        "barplot"    : self.barplot,
-        "countplot"  : self.countplot,
-        "jointplot"  : self.jointplot,
-        "pairplot"   : self.pairplot,
-        "distplot"   : self.distplot,
-        "kdeplot"    : self.kdeplot,
-        #rugplot -> not interesting
-        "lmplot"     : self.lmplot,
-        "regplot"    : self.regplot,
-        "residplot"  : self.residplot,
-        "heatmap"    : self.heatmap,
-        #"clustermap": clustermap,
-        }
-
+}
+    
 
 
 
