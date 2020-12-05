@@ -376,7 +376,7 @@ PLOTS ={
         "height": "height",
         "aspect": "aspect",
         "dropna": "dropna",
-    },"distplot":{
+    },"displot":{
         "a": "a",
         "bins": "bins",
         "hist": "hist",
