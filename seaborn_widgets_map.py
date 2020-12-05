@@ -2,9 +2,28 @@ import ipywidgets as widgets
 import seaborn
 import pandas as pd
 
-PALETTES = ["pastel", "magma", "ch:.25", "ch:0.95", "Set2", "Set3"]
-
-
+# see https://matplotlib.org/3.1.1/gallery/color/colormap_reference.html
+PALETTES = [
+    "deep", "muted", "bright", "pastel", "dark", "colorblind",
+    "pastel", "magma", "ch:.25", "ch:0.95", "Set2", "Set3",
+    "husl", "hsl",
+        'viridis', 'plasma', 'inferno', 'magma', 'cividis',
+            'Greys', 'Purples', 'Blues', 'Greens', 'Oranges', 'Reds',
+            'YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu',
+            'GnBu', 'PuBu', 'YlGnBu', 'PuBuGn', 'BuGn', 'YlGn',
+            'binary', 'gist_yarg', 'gist_gray', 'gray', 'bone', 'pink',
+            'spring', 'summer', 'autumn', 'winter', 'cool', 'Wistia',
+            'hot', 'afmhot', 'gist_heat', 'copper',
+            'PiYG', 'PRGn', 'BrBG', 'PuOr', 'RdGy', 'RdBu',
+            'RdYlBu', 'RdYlGn', 'Spectral', 'coolwarm', 'bwr', 'seismic',
+        'twilight', 'twilight_shifted', 'hsv',
+            'Pastel1', 'Pastel2', 'Paired', 'Accent',
+            'Dark2', 'Set1', 'Set2', 'Set3',
+            'tab10', 'tab20', 'tab20b', 'tab20c',
+            'flag', 'prism', 'ocean', 'gist_earth', 'terrain', 'gist_stern',
+            'gnuplot', 'gnuplot2', 'CMRmap', 'cubehelix', 'brg',
+            'gist_rainbow', 'rainbow', 'jet', 'nipy_spectral', 'gist_ncar'
+            ]
 
 
 
@@ -139,9 +158,10 @@ class WidgetDispenser(object):
         "y_partial"         : (widgets.Dropdown,             {"options":col_list                                                                   }),
     }
 
-    def __call__(self, arg_name):
+    def __call__(self, arg_name, descrp=True):
         widget, kwargs = self.widget_map[arg_name]
-        kwargs["description"]=arg_name
+        if descrp:
+            kwargs["description"]=arg_name
         return widget(**kwargs)
 
 

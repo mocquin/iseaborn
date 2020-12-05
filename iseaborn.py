@@ -8,6 +8,8 @@ from ipywidgets.widgets.interaction import show_inline_matplotlib_plots
 
 from seaborn_widgets_map import WidgetDispenser, PLOTS
 
+hbox_layout = ipyw.Layout(width='800px')
+
 
 class PlotUI(ipyw.HBox):
     
@@ -35,7 +37,7 @@ class PlotUI(ipyw.HBox):
         # create widgets and add them to the HBox
         for arg_name, widget_name in self.plot_dict.items():
             # create widget
-            w = self.wdispenser(widget_name)
+            w = self.wdispenser(widget_name, descrp=False)
             
             self.widgets_names.append(arg_name)
             cb = self._create_enable_checkbox(descr=arg_name)
@@ -43,7 +45,7 @@ class PlotUI(ipyw.HBox):
             
             box = [cb, w]
             
-            self.widgets_list.append(ipyw.HBox(box))
+            self.widgets_list.append(ipyw.HBox(box))#, layout=hbox_layout))
         
         self.connect_widgets()
         
@@ -60,7 +62,7 @@ class PlotUI(ipyw.HBox):
         self.display_plot()
     
     def _create_enable_checkbox(self, descr="Disable:"):
-        return ipyw.Checkbox(description=descr, value=True)
+        return ipyw.Checkbox(description=descr, value=True, indent=False, layout=ipyw.Layout(width="300px"))
     
     def _link_enable_status(self, w, cb):
         return ipyw.link((cb, "value"), (w, "disabled"))
