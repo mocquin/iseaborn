@@ -1,19 +1,5 @@
-trouver un moyen d'automatiser : 
- - la création de widget via des abbréviations ?
- 
-# retirer les warning de plots : 
-Soit avec 
-```python
-import warnings
-warnings.filterwarnings("ignore")
-```
 
-soit en fermant les figures explicitements : https://stackoverflow.com/questions/8213522/when-to-use-cla-clf-or-close-for-clearing-a-plot-in-matplotlib
-```python
-plt.close(fig)
-```
-
-
+# pouvoir sous-sélectionner les colonnes
 # définir un nom de session : nom du df ?
 # écrire des titres sur les graphes ?
 # définir une palette par défaut au démarage ?
@@ -29,4 +15,14 @@ faire scatterplot et lineplot dans iseaborn
 https://stackoverflow.com/questions/55126088/scatter-plot-grid-faceted-by-columns-in-matplotlib-or-seaborn
  
  
- 
+# retirer les warning de plots 
+Soit avec 
+```python
+import warnings
+warnings.filterwarnings("ignore")
+```
+
+soit en fermant les figures explicitements : https://stackoverflow.com/questions/8213522/when-to-use-cla-clf-or-close-for-clearing-a-plot-in-matplotlib
+```python
+plt.close(fig)
+```
