@@ -35,9 +35,9 @@ Or more visually :
  
 # See also
 
-https://github.com/chmduquesne/quickviz
-https://github.com/pseudoPixels/iSeaborn
-https://github.com/TrainingByPackt/Interactive-Data-Visualization-with-Python
-https://gist.github.com/noklam/ddd503085c5aa0c27ddb0eceb4a2f07b
+ - https://github.com/chmduquesne/quickviz
+ - https://github.com/pseudoPixels/iSeaborn
+ - https://github.com/TrainingByPackt/Interactive-Data-Visualization-with-Python
+ - https://gist.github.com/noklam/ddd503085c5aa0c27ddb0eceb4a2f07b
 
 
