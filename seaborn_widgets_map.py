@@ -58,7 +58,7 @@ class WidgetDispenser(object):
         self.widget_map = {
             
         "a"                 : (widgets.Dropdown,             {"options":col_tuples                                                                 }),
-        "a_select"          : (widgets.SelectMultiple,       {"options":col_list, "description":"Column selector"                                    }),
+        "a_select"          : (widgets.SelectMultiple,       {"options":col_list, "description":"Column selector"                                  }),
         "a_select_ext"      : (widgets.SelectMultiple,       {"options":col_list_ext                                                               }),
         "alpha"             : (widgets.FloatSlider,          {"min":0.0, "max":1.0, "step":0.05                                                    }),
         "annot"             : (widgets.Checkbox,             {                                                                                     }),
@@ -412,9 +412,11 @@ PLOTS ={
     },"kdeplot":{
         "data": "data",
         "data2": "data2",
+        #"x":"x",
+        #"y":"y",
         "shade": "shade",
         "vertical": "vertical",
-        "kernel": "kernel",
+        #removed("kernel": "kernel",)
         "bw": "bw",
         "gridsize": "gridsize",
         "cut": "cut",

@@ -23,9 +23,21 @@ Or more visually :
 
 ![examples.gif](examples.gif)
 
+# TODO/IDEAS
+ - [ ] : add a title on plots based on plot type ?
+ - [ ] : add a title based on df name ?
+ - [ ] : clean palettes list
+ - [ ] : add support for `sns.set_style`
+ - [ ] : add support for `sns.set_context`
+ - [ ] : add support for `sns.set_palette()`
+ - [ ] : use tight_layout ?
+ - [ ] : add a FacetGrid/Grid wrapper ?
+ 
 # See also
 
+https://github.com/chmduquesne/quickviz
 https://github.com/pseudoPixels/iSeaborn
 https://github.com/TrainingByPackt/Interactive-Data-Visualization-with-Python
 https://gist.github.com/noklam/ddd503085c5aa0c27ddb0eceb4a2f07b
+
 
