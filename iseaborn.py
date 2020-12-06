@@ -33,6 +33,9 @@ class PlotUI(ipyw.HBox):
         hbox = ipyw.HBox()
         self.output = ipyw.Output()
 
+        # columns selector
+        self.cols_selector = self.wdispenser("a_select")
+        self.cols_selector.value = [f for f in self.df]
         
         # create widgets and add them to the HBox
         for arg_name, widget_name in self.plot_dict.items():
@@ -50,7 +53,7 @@ class PlotUI(ipyw.HBox):
         self.connect_widgets()
         
         # set the widgets in a VBox
-        vbox.children = [*self.widgets_list]
+        vbox.children = [self.cols_selector] + [*self.widgets_list]
         
         # wrap all the UI for the plot in a hbox
         self.children = [vbox, self.output]
@@ -73,6 +76,7 @@ class PlotUI(ipyw.HBox):
             children = wbox.children
             children[1].observe(self.display_plot, 'value')    
             children[0].observe(self.display_plot, "value")
+        self.cols_selector.observe(self.display_plot, "value")
             
     def retrieve_enabled_kwargs(self):
         kwargs = {}
@@ -93,18 +97,29 @@ class PlotUI(ipyw.HBox):
             
     def plot(self, kwargs):
         plt.close(self.fig)
+        sub_df = self.df[list(self.cols_selector.value)]
         with self.output:
             clear_output(wait=True)
-            fig, ax = plt.subplots()
-            self.fig = fig
+            
+            
+            if self.plot_name not in ["catplot", "relplot", "pairplot", "displot", "lmplot", "jointplot"]:
+                fig, ax = plt.subplots()
+                self.fig = fig
             method = getattr(sns, self.plot_name)
             if self.plot_name == "heatmap":
-                kwargs["data"] = self.df.corr()
+                kwargs["data"] = sub_df.corr()
             elif self.plot_name not in ["distplot", "kdeplot"]:
-                kwargs["data"]=self.df
-            res = method(**kwargs, ax=ax)
+                kwargs["data"]= sub_df
+            if self.plot_name not in ["catplot", "relplot", "pairplot", "displot", "lmplot", "jointplot"]:
+            # catplot is a figurelevel
+                kwargs["ax"] = ax
+                
+            res = method(**kwargs)
             return res
     
+    
+# ajouter histplot
+# regplot/residplot/lmplot : ajouter x/y par défaut
     
 
 class SeabornBookletFull(ipyw.Tab):

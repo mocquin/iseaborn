@@ -13,6 +13,8 @@ https://towardsdatascience.com/6-simple-tips-for-prettier-and-customised-plots-i
 faire scatterplot et lineplot dans iseaborn
  
 https://stackoverflow.com/questions/55126088/scatter-plot-grid-faceted-by-columns-in-matplotlib-or-seaborn
+https://stackoverflow.com/questions/60080949/using-ipywidgets-selectmultiple-on-a-dataframe
+https://stackoverflow.com/questions/54629077/jupyter-how-can-i-interactively-select-series-to-plot-using-widgets-selectmulti/54629995
  
  
 # retirer les warning de plots 

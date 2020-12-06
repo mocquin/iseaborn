@@ -58,7 +58,7 @@ class WidgetDispenser(object):
         self.widget_map = {
             
         "a"                 : (widgets.Dropdown,             {"options":col_tuples                                                                 }),
-        "a_select"          : (widgets.SelectMultiple,       {"options":col_list                                                                   }),
+        "a_select"          : (widgets.SelectMultiple,       {"options":col_list, "description":"Column selector"                                    }),
         "a_select_ext"      : (widgets.SelectMultiple,       {"options":col_list_ext                                                               }),
         "alpha"             : (widgets.FloatSlider,          {"min":0.0, "max":1.0, "step":0.05                                                    }),
         "annot"             : (widgets.Checkbox,             {                                                                                     }),
@@ -145,7 +145,7 @@ class WidgetDispenser(object):
         "units"             : (widgets.Dropdown,             {"options":col_list                                                                   }),
         "vertical"          : (widgets.Checkbox,             {                                                                                     }),
         "vmax"              : (widgets.FloatText,            {"value":1.0, "step":0.1                                                              }),
-        "vmin"              : (widgets.FloatText,            {"value":1.0, "step":0.1                                                              }),
+        "vmin"              : (widgets.FloatText,            {"value":0.0, "step":0.1                                                              }),
         "whis"              : (widgets.FloatText,            {"value":1.0                                                                          }),
         "width"             : (widgets.FloatText,            {"value":1.0                                                                          }),
         "x"                 : (widgets.Dropdown,             {"options":col_list                                                                   }),
@@ -160,11 +160,11 @@ class WidgetDispenser(object):
 
     def __call__(self, arg_name, descrp=True):
         widget, kwargs = self.widget_map[arg_name]
-        if descrp:
+        if descrp != "Column selector":
             kwargs["description"]=arg_name
         return widget(**kwargs)
 
-
+import collections
 PLOTS ={
     "relplot":{
             "x"       : "x",
@@ -231,7 +231,7 @@ PLOTS ={
             "sort": "sort",
             "err_style": "err_style",
             "legend": "legend",
-        },"catplot_widgets":{
+        },"catplot":{
             "x": "x",
             "y": "y",
             "row": "row",
@@ -506,10 +506,44 @@ PLOTS ={
         "square": "square",
         #xticklabels, yticklabels
         #"mask"
+    },"histplot":{
+        "x":"x",
+        "y":"y",
+        "hue":"hue",
+        #"weights":"weights", 
+        #"stat":"stat", 
+        "bins":"bins", 
+        #"binwidth": "binwidth", 
+        #"binrange": "binrange", 
+        #"discrete": "discrete", 
+        "cumulative": "cumulative", 
+        #"common_bins": "common_bins",
+        #"common_norm": "common_norm", 
+        #"multiple": "multiple", 
+        #"element": "element", 
+        #"fill": "fill", 
+        #"shrink": "shrink", 
+        "kde": "kde",
+        #"kde_kws": "kde_kws", 
+        #"line_kws": "line_kws", 
+        #"thresh": "thresh", 
+        #"pthresh": "pthresh",
+        #"pmax": "pmax",
+        "cbar": "cbar",
+        "cbar_ax": "cbar_ax",
+        #"cbar_kws": "cbar_kws", 
+        "palette": "palette", 
+        #"hue_order": "hue_order",
+        #"hue_norm": "hue_norm", 
+        "color": "color",
+        #"log_scale": "log_scale",
+        "legend": "legend", 
+        #"ax": "None", 
+        #"**kwargs)
     }
 }
     
-
+PLOTS = collections.OrderedDict(sorted(PLOTS.items()))
 
 
     
