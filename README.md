@@ -32,6 +32,7 @@ Or more visually :
  - [ ] : add support for `sns.set_palette()`
  - [ ] : use tight_layout ?
  - [ ] : add a FacetGrid/Grid wrapper ?
+ - [ ] : add pandas plotting interface
  
 # See also
 
