@@ -33,6 +33,7 @@ Or more visually :
  - [ ] : use tight_layout ?
  - [ ] : add a FacetGrid/Grid wrapper ?
  - [ ] : add pandas plotting interface
+ - [ ] : improve command-as-str output
  
 # See also
 
