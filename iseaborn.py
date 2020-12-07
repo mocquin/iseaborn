@@ -111,12 +111,17 @@ class PlotUI(ipyw.HBox):
             clear_output(wait=True)
             kwargs = self.retrieve_enabled_kwargs()
             # get all widgets names and values in a dict
+            
             self.plot(kwargs)
             show_inline_matplotlib_plots()   
             
     def plot(self, kwargs):
         # select sub cols
         sub_df = self.df[list(self.cols_selector.value)]
+        # get the plotting method from seaborn and plot with the kwargs
+        method = getattr(sns, self.plot_name)
+        kwargs_str = self._format_kwargs(kwargs)
+        print(f"sns.{self.plot_name}({kwargs_str})")
         # deal with specific plots
         if self.plot_name not in ["catplot", "relplot", "pairplot", "displot", "lmplot", "jointplot"]:
             fig, ax = plt.subplots(figsize=self.figsize)
@@ -127,11 +132,17 @@ class PlotUI(ipyw.HBox):
             kwargs["data"]= sub_df
         if self.plot_name not in ["catplot", "relplot", "pairplot", "displot", "lmplot", "jointplot"]:
             kwargs["ax"] = ax
-        # get the plotting method from seaborn and plot with the kwargs
-        method = getattr(sns, self.plot_name)
         res = method(**kwargs)
         return res
     
+    def _format_kwargs(self, kwargs):
+        if not bool(kwargs):
+            return ""
+        def format_arg_on_type(arg):
+            if isinstance(arg, str):
+                return f"'{arg}'"
+            return f"{arg}"
+        return ", ".join([f"{t[0]}={format_arg_on_type(t[1])}" for t in kwargs.items()])
     
 
 class SeabornBooklet(ipyw.Tab):
