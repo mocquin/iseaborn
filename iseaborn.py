@@ -6,13 +6,14 @@ import pandas as pd
 from IPython.display import display, clear_output
 from ipywidgets.widgets.interaction import show_inline_matplotlib_plots
 
-from seaborn_widgets_map import WidgetDispenser, PLOTS
+from seaborn_widgets_map import SeabornWidgetDispenser, SEABORN_PLOTS
+from pandas_widgets_map import PandasWidgetDispenser, PANDAS_PLOTS
 
 
 
 class PlotUI(ipyw.HBox):
     
-    def __init__(self, df, plot_name, figsize=(6.4, 4.8)):
+    def __init__(self, df, plot_name, interface="seaborn", figsize=(6.4, 4.8)):
         if not isinstance(df, pd.DataFrame):
             raise ValueError
         super().__init__()
@@ -21,6 +22,18 @@ class PlotUI(ipyw.HBox):
         self.plot_name = plot_name
         
         # set plot dict
+        if interface=="seaborn":
+            PLOTS = SEABORN_PLOTS
+            WidgetDispenser = SeabornWidgetDispenser
+            self.module = sns
+        elif interface == "pandas":
+            PLOTS = PANDAS_PLOTS
+            WidgetDispenser = PandasWidgetDispenser
+            self.module = df.plot
+        else:
+            raise ValueError("Wrong interface")
+        self.interface = interface
+    
         plot_dict = PLOTS[plot_name]
         wdispenser = WidgetDispenser(df)
         
@@ -70,15 +83,25 @@ class PlotUI(ipyw.HBox):
 
     def _set_init_values_widgets(self):
         """Init some args for specific plot types"""
-        if self.plot_name in ["regplot", "residplot", "lmplot"]:
-            self.wdict["x"][0].value = False
-            self.wdict["y"][0].value = False
-        elif self.plot_name in ["kdeplot"]:
-            self.wdict["data"][0].value = False    
+        if self.interface == "seaborn":
+            if self.plot_name in ["regplot", "residplot", "lmplot"]:
+                self.wdict["x"][0].value = False
+                self.wdict["y"][0].value = False
+            elif self.plot_name in ["kdeplot"]:
+                self.wdict["data"][0].value = False    
+                
+        elif self.interface == "pandas":
+            if self.plot_name in ["hexbin", "scatter"]:
+                self.wdict["x"][0].value = False
+                self.wdict["y"][0].value = False
+            elif self.plot_name in ["pie"]:
+                self.wdict["y"][0].value = False
+        
         
     def _create_enable_checkbox(self, descr="Disable:"):
         """Create a checkbox"""
         return ipyw.Checkbox(description=descr, value=True, indent=False, layout=ipyw.Layout(width="300px"))
+    
     
     def _link_enable_status(self, w, cb):
         """Link checkbox values to widget disabled value"""
@@ -94,6 +117,7 @@ class PlotUI(ipyw.HBox):
         # change in sub cols
         self.cols_selector.observe(self.display_plot, "value")
             
+            
     def retrieve_enabled_kwargs(self):
         """Retrieve values of args that are enabled into a dict"""
         kwargs = {}
@@ -102,6 +126,7 @@ class PlotUI(ipyw.HBox):
             if children[0].value == False:
                 kwargs[wname] = children[1].value   
         return kwargs
+    
         
     def display_plot(self, *_):
         # clear_output de IPython.display
@@ -115,25 +140,33 @@ class PlotUI(ipyw.HBox):
             self.plot(kwargs)
             show_inline_matplotlib_plots()   
             
+            
     def plot(self, kwargs):
         # select sub cols
         sub_df = self.df[list(self.cols_selector.value)]
         # get the plotting method from seaborn and plot with the kwargs
-        method = getattr(sns, self.plot_name)
+        method = getattr(self.module, self.plot_name)
         kwargs_str = self._format_kwargs(kwargs)
-        print(f"sns.{self.plot_name}({kwargs_str})")
+        display(f"{self.interface}.{self.plot_name}({kwargs_str})")
         # deal with specific plots
-        if self.plot_name not in ["catplot", "relplot", "pairplot", "displot", "lmplot", "jointplot"]:
-            fig, ax = plt.subplots(figsize=self.figsize)
-            self.fig = fig
-        if self.plot_name == "heatmap":
-            kwargs["data"] = sub_df.corr()
-        elif self.plot_name not in ["distplot", "kdeplot"]:
-            kwargs["data"]= sub_df
-        if self.plot_name not in ["catplot", "relplot", "pairplot", "displot", "lmplot", "jointplot"]:
-            kwargs["ax"] = ax
+
+            
+        if self.interface == "seaborn":
+            if self.plot_name not in ["catplot", "relplot", "pairplot", "displot", "lmplot", "jointplot"]:
+                fig, ax = plt.subplots(figsize=self.figsize)
+                self.fig = fig
+            if self.plot_name == "heatmap":
+                kwargs["data"] = sub_df.corr()
+            elif self.plot_name not in ["distplot", "kdeplot"]:
+                kwargs["data"]= sub_df
+            if self.plot_name not in ["catplot", "relplot", "pairplot", "displot", "lmplot", "jointplot"]:
+                kwargs["ax"] = ax
+        elif self.interface == "pandas":
+            pass
+        
         res = method(**kwargs)
         return res
+    
     
     def _format_kwargs(self, kwargs):
         if not bool(kwargs):
@@ -145,17 +178,24 @@ class PlotUI(ipyw.HBox):
         return ", ".join([f"{t[0]}={format_arg_on_type(t[1])}" for t in kwargs.items()])
     
 
-class SeabornBooklet(ipyw.Tab):
+class BookletUI(ipyw.Tab):
     
-    def __init__(self, df=None, plot_names=PLOTS.keys(), figsize=(6.4, 4.8)):
+    def __init__(self, df=None, plot_names=SEABORN_PLOTS.keys(), interface="seaborn", figsize=(6.4, 4.8)):
         super().__init__()
+        
+        if interface == "seaborn":
+            plot_names = SEABORN_PLOTS.keys()
+        elif interface == "pandas":
+            plot_names = PANDAS_PLOTS.keys()
+        else:
+            raise ValueError("Wrong interface")
         
         self.df = df
         self.tab_names = []
         self.tab_contents = []
         
         for plot in plot_names:
-            ui = PlotUI(self.df, plot, figsize)
+            ui = PlotUI(self.df, plot, interface=interface, figsize=figsize)
             self.tab_names.append(plot)
             self.tab_contents.append(ui)
         

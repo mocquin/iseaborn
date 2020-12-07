@@ -27,7 +27,7 @@ PALETTES = [
 
 
 
-class WidgetDispenser(object):
+class SeabornWidgetDispenser(object):
     """
     Example
     -------
@@ -165,7 +165,7 @@ class WidgetDispenser(object):
         return widget(**kwargs)
 
 import collections
-PLOTS ={
+SEABORN_PLOTS ={
     "relplot":{
             "x"       : "x",
             "y"       : "y",
@@ -545,12 +545,12 @@ PLOTS ={
     }
 }
     
-PLOTS = collections.OrderedDict(sorted(PLOTS.items()))
+SEABORN_PLOTS = collections.OrderedDict(sorted(SEABORN_PLOTS.items()))
 
 
     
 
-def plot(df, plot_type, kwargs):
+def seaborn_plot(df, plot_type, kwargs):
     method = getattr(seaborn, plot_type)
     if plot_type not in ["distplot", "kdeplot"]:
         kwargs["data"]=df
