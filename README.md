@@ -34,6 +34,8 @@ Or more visually :
  - [ ] : add a FacetGrid/Grid wrapper ?
  - [ ] : add pandas plotting interface
  - [ ] : improve command-as-str output
+ - [ ] : possibility to add  multiple graphs on same tab (sub-tab ?)
+ - [ ] : add possibility for pandas filters : &, |, <, > etc
  
 # See also
 
