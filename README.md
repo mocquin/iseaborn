@@ -36,6 +36,7 @@ Or more visually :
  - [ ] : improve command-as-str output
  - [ ] : possibility to add  multiple graphs on same tab (sub-tab ?)
  - [ ] : add possibility for pandas filters : &, |, <, > etc
+ - [ ] : add plotting option through ".plot()"
  
 # See also
 
