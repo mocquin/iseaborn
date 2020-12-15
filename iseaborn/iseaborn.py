@@ -21,7 +21,7 @@ class PlotUI(ipyw.HBox):
         self.df = df
         self.plot_name = plot_name
         
-        # set plot dict
+        # set interface and plot dict
         if interface=="seaborn":
             PLOTS = SEABORN_PLOTS
             WidgetDispenser = SeabornWidgetDispenser
@@ -34,38 +34,46 @@ class PlotUI(ipyw.HBox):
             raise ValueError("Wrong interface")
         self.interface = interface
     
+        # get the plot dict
         plot_dict = PLOTS[plot_name]
+        # get the widget dispenser
         wdispenser = WidgetDispenser(df)
         
         self.widgets_names = []
         self.widgets_list  = []
         self.wdict = {}
 
-        # create a VBox and Output widgets
+        # create a Boxes and Output widgets
         vbox = ipyw.VBox()
         hbox = ipyw.HBox()
         self.output = ipyw.Output()
 
         # columns selector
         self.cols_selector = wdispenser("a_select")
+        # init cols_selector values to all cols
         self.cols_selector.value = [f for f in self.df]
         
         # create widgets and add them to the HBox
         for arg_name, widget_name in plot_dict.items():
             # create widget
             w = wdispenser(widget_name, descrp=False)
-            
             self.widgets_names.append(arg_name)
+
+            # create checkbox
             cb = self._create_enable_checkbox(descr=arg_name)
+            # link widget with checkbox
             self._link_enable_status(w, cb)
+            # store the couple (checkbox+widget)
             self.wdict[arg_name] = (cb, w)
-            
             box = [cb, w]
-            
+            # add the couple to the HBox
             self.widgets_list.append(ipyw.HBox(box))
-        
+    
+    
+        # intiatlize specific widgets values
         self._set_init_values_widgets()
         
+        # observe widgets' states to trigger a replot
         self.connect_widgets()
         
         # set the widgets in a VBox
@@ -78,6 +86,7 @@ class PlotUI(ipyw.HBox):
         with self.output:
             fig, ax = plt.subplots(figsize=self.figsize)
             self.fig = fig
+        # first plot
         self.display_plot()
     
 
@@ -133,7 +142,9 @@ class PlotUI(ipyw.HBox):
     
         
     def display_plot(self, *_):
-        
+        """Close the current figure, get the widgets states to a kwargs dict
+        then call the .plot method"""
+        # close current figure
         plt.close(self.fig)
         show_inline_matplotlib_plots()   
         with self.output:
@@ -141,6 +152,7 @@ class PlotUI(ipyw.HBox):
             clear_output(wait=True)
             # get all widgets names and values in a dict
             kwargs = self.retrieve_enabled_kwargs()
+            # actual plot call
             self.plot(kwargs)
             show_inline_matplotlib_plots()   
             
@@ -159,10 +171,16 @@ class PlotUI(ipyw.HBox):
         
         # deal with specific plots    
         if self.interface == "seaborn":
+            
+            # deal with figure-level vs axes-level
             if self.plot_name not in ["catplot", "relplot", "pairplot", "displot", "lmplot", "jointplot"]:
                 fig, ax = plt.subplots(figsize=self.figsize)
                 self.fig = fig
                 kwargs["ax"] = ax
+            else:
+                kwargs["height"]=self.figsize[1]
+                
+            # add data
             if self.plot_name == "heatmap":
                 kwargs["data"] = sub_df.corr()
             elif self.plot_name not in ["distplot", "kdeplot"]:
@@ -186,7 +204,8 @@ class PlotUI(ipyw.HBox):
                 return f"'{arg}'"
             return f"{arg}"
         return ", ".join([f"{t[0]}={format_arg_on_type(t[1])}" for t in kwargs.items()])
-    
+
+
 
 class BookletUI(ipyw.Tab):
     

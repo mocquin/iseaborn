@@ -99,7 +99,7 @@ class SeabornWidgetDispenser(object):
         "kde"               : (widgets.Checkbox,             {                                                                                     }),
         "kernel"            : (widgets.Dropdown,             {"options":['gau', 'cos', 'biw', 'epa', 'tri', 'triw']                                }),
         "kind_catplot"      : (widgets.Dropdown,             {"options":["point", "bar", "strip", "swarm", "box", "violin", "boxen"]               }),
-        "kind_jointplot"    : (widgets.Dropdown,             {"options":["scatter", "reg", "resid", "kde", "hex"]                                  }),
+        "kind_jointplot"    : (widgets.Dropdown,             {"options":["scatter", "reg", "resid", "kde", "hex", "hist"]                          }),
         "kind_pairplot"     : (widgets.Dropdown,             {"options":["scatter", "reg"]                                                         }),
         "kind_relplot"      : (widgets.Dropdown,             {"options":["scatter", "line"]                                                        }),
         "label"             : (widgets.Text,                 {                                                                                     }),
@@ -387,7 +387,11 @@ SEABORN_PLOTS ={
         "space": "space",
         "dropna": "dropna",
         #"xlim"
-        #"ylim"
+        #"ylim",
+        "hue":"hue",
+        "palette":"palette",
+        #"hue_order",
+        #hue_norm
     },
     # figure-level : return a PairPlot
     "pairplot":{
