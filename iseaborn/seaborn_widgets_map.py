@@ -166,6 +166,7 @@ class SeabornWidgetDispenser(object):
 
 import collections
 SEABORN_PLOTS ={
+    # figure-level
     "relplot":{
             "x"       : "x",
             "y"       : "y",
@@ -231,7 +232,9 @@ SEABORN_PLOTS ={
             "sort": "sort",
             "err_style": "err_style",
             "legend": "legend",
-        },"catplot":{
+        },
+    # figure-level
+    "catplot":{
             "x": "x",
             "y": "y",
             "row": "row",
@@ -371,7 +374,9 @@ SEABORN_PLOTS ={
         "palette": "palette",
         "saturation": "saturation",
         #"dodge"
-    },"jointplot":{
+    },
+    # figure-level : return a JointGrid
+    "jointplot":{
         "x": "x",
         "y": "y",
         "kind": "kind_jointplot",
@@ -383,7 +388,9 @@ SEABORN_PLOTS ={
         "dropna": "dropna",
         #"xlim"
         #"ylim"
-    },"pairplot":{
+    },
+    # figure-level : return a PairPlot
+    "pairplot":{
         "hue": "hue",
         #hue_order
         "palette": "palette",
@@ -396,7 +403,9 @@ SEABORN_PLOTS ={
         "height": "height",
         "aspect": "aspect",
         "dropna": "dropna",
-    },"displot":{
+    },
+    # figure level : return a FacetGrid
+    "displot":{
         "a": "a",
         "bins": "bins",
         "hist": "hist",
@@ -547,11 +556,11 @@ SEABORN_PLOTS ={
     
 SEABORN_PLOTS = collections.OrderedDict(sorted(SEABORN_PLOTS.items()))
 
+## args
+# regplot/residplot/lmplot : activate "x" and "y" by default to first and second item in list
+# kdeplot : "data" by default to first item
 
-    
-
-def seaborn_plot(df, plot_type, kwargs):
-    method = getattr(seaborn, plot_type)
-    if plot_type not in ["distplot", "kdeplot"]:
-        kwargs["data"]=df
-    return method(**kwargs)
+## plot-level : 
+# catplot/relpot/pairplot/displot/lmplot/jointplot : do not create a figure
+# else, create figure and provide "ax" arg
+## data-pre-processing : heatmap : corr()

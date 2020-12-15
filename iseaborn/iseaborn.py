@@ -6,8 +6,8 @@ import pandas as pd
 from IPython.display import display, clear_output
 from ipywidgets.widgets.interaction import show_inline_matplotlib_plots
 
-from seaborn_widgets_map import SeabornWidgetDispenser, SEABORN_PLOTS
-from pandas_widgets_map import PandasWidgetDispenser, PANDAS_PLOTS
+from .seaborn_widgets_map import SeabornWidgetDispenser, SEABORN_PLOTS
+from .pandas_widgets_map import PandasWidgetDispenser, PANDAS_PLOTS
 
 
 
@@ -100,12 +100,16 @@ class PlotUI(ipyw.HBox):
         
     def _create_enable_checkbox(self, descr="Disable:"):
         """Create a checkbox"""
-        return ipyw.Checkbox(description=descr, value=True, indent=False, layout=ipyw.Layout(width="300px"))
+        return ipyw.Checkbox(description=descr, 
+                             value=True, 
+                             indent=False, 
+                             layout=ipyw.Layout(width="200px"))
     
     
     def _link_enable_status(self, w, cb):
         """Link checkbox values to widget disabled value"""
-        return ipyw.link((cb, "value"), (w, "disabled"))
+        return ipyw.link((cb, "value"),
+                         (w, "disabled"))
 
 
     def connect_widgets(self):
@@ -119,7 +123,7 @@ class PlotUI(ipyw.HBox):
             
             
     def retrieve_enabled_kwargs(self):
-        """Retrieve values of args that are enabled into a dict"""
+        """Retrieve values of args that are enabled into a kwargs dict"""
         kwargs = {}
         for wbox, wname in zip(self.widgets_list, self.widgets_names):
             children = wbox.children
@@ -129,38 +133,41 @@ class PlotUI(ipyw.HBox):
     
         
     def display_plot(self, *_):
-        # clear_output de IPython.display
+        
         plt.close(self.fig)
         show_inline_matplotlib_plots()   
         with self.output:
+            # clear_output de IPython.display
             clear_output(wait=True)
-            kwargs = self.retrieve_enabled_kwargs()
             # get all widgets names and values in a dict
-            
+            kwargs = self.retrieve_enabled_kwargs()
             self.plot(kwargs)
             show_inline_matplotlib_plots()   
             
             
     def plot(self, kwargs):
+        """Call the plot function with kwargs"""
         # select sub cols
         sub_df = self.df[list(self.cols_selector.value)]
+        
         # get the plotting method from seaborn and plot with the kwargs
         method = getattr(self.module, self.plot_name)
+        
+        # display the command to call to reproduce the plot
         kwargs_str = self._format_kwargs(kwargs)
         display(f"{self.interface}.{self.plot_name}({kwargs_str})")
-        # deal with specific plots
-
-            
+        
+        # deal with specific plots    
         if self.interface == "seaborn":
             if self.plot_name not in ["catplot", "relplot", "pairplot", "displot", "lmplot", "jointplot"]:
                 fig, ax = plt.subplots(figsize=self.figsize)
                 self.fig = fig
+                kwargs["ax"] = ax
             if self.plot_name == "heatmap":
                 kwargs["data"] = sub_df.corr()
             elif self.plot_name not in ["distplot", "kdeplot"]:
-                kwargs["data"]= sub_df
-            if self.plot_name not in ["catplot", "relplot", "pairplot", "displot", "lmplot", "jointplot"]:
-                kwargs["ax"] = ax
+                kwargs["data"] = sub_df
+                
         elif self.interface == "pandas":
             pass
         
@@ -169,6 +176,9 @@ class PlotUI(ipyw.HBox):
     
     
     def _format_kwargs(self, kwargs):
+        """
+        Format kwargs into a str for display
+        """
         if not bool(kwargs):
             return ""
         def format_arg_on_type(arg):
@@ -202,5 +212,3 @@ class BookletUI(ipyw.Tab):
         self.children = self.tab_contents
         for i, name in enumerate(self.tab_names):
             self.set_title(i, name)
-            
-            
